@@ -4,7 +4,7 @@
 
 ## Overview
 
-Mobilert is a gait and stability monitoring application that can intelligently monitor walking patterns and detect abnormalities such as falls or limping. In addition it provides a web interface to monitor walking patterns of a user in real time and notifies of the abnormalities as they occur. For the monitoring system there are two parts, and android application that sends accelerometer data and a web server that recieves the data, processes it, and displays it on the web interface. While at the current state we chose to create an android device to send the acceleromter data, practically any device with an accelerometer and internet connection can be used.
+Mobilert is a gait and stability monitoring application that can intelligently monitor walking patterns and detect abnormalities such as falls or limping. In addition it provides a web interface to monitor walking patterns of a user in real time (uses d3 visualization) and notifies of the abnormalities as they occur. For the monitoring system there are two parts, and android application that sends accelerometer data and a web server that recieves the data, processes it, and displays it on the web interface. While at the current state we chose to create an android device to send the acceleromter data, practically any device with an accelerometer and internet connection can be used.
 
 This project was created in 24 hours during the 2015 MDP Hackathon in Austin, Texas and won 2nd place out of 21 teams. See below for team members.
 
