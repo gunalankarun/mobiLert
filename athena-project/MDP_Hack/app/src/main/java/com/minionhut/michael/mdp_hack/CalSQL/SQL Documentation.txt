@@ -1,0 +1,24 @@
+SQLlite Database will hold all of the user's information on the phone locally
+
+This SQLlite Database will contain the following pieces of data
+database name = cal.db
+table name = NthSense
+
+timeStamp(integer)  //This is the current UNIX time to the nearest milisecond in the java 'long' datatype. This will also be our primary local key. Note, this comes last when using CalSQLObj due to the method overload syntax.
+xVal(real)          //This is the sensor's X value in floating point
+yVal(real)          //This is the sensor's Y value in floating point
+zVal(real)          //This is the sensor's Z value in floating point
+proxVal(real)       //This is the proximity sensor's value in floating point
+luxVal(real)        //This is the light sensor's value in floating point
+isWalking(integer)  //This indicates if the user is walking
+isTraining(integer) //This indicates if the user is training
+
+
+
+
+
+
+
+
+Reason to use UNIXtime miliseconds over SensorEvent nanoseconds:
+The nanosecond value returned by the sensor event data is only since device startup. This means that it is unreliable as a primary key. Using UNIX time will give us a reliable timestamp to use as a primary key locally on the phone, and will also be very easy to implement on the server side, as long as we can assume that the phone's clock is set correctly. In addition, even for gaming only a 20 milisecond delay is recommended, so milisecond perscision should work fine for us.

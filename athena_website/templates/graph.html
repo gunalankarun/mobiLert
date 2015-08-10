@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)http://bost.ocks.org/mike/path/ -->
+<html class="ocks-org do-not-copy"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta charset="utf-8">
+<title>Path Transitions</title>
+<style>
+
+.x.axis line {
+  shape-rendering: auto;
+}
+
+.line {
+  fill: none;
+  stroke: #000;
+  stroke-width: 1.5px;
+}
+
+</style>
+<script src="./static/d3.v3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+
+var n = 1000,
+    random = d3.random.normal(0, 0);
+
+	var duration_speed = 85;
+	var result = [];
+	var pos_x = 0;
+	var pos_y = 0;
+	var pos_z = 0;
+
+function getData() {
+	$.get("/data", function(res, status) {
+		result = res;
+	});
+}
+getData();
+
+window.setInterval(getData, 2720);
+
+function chart(domain, interpolation, tick) {
+
+	var data = d3.range(n).map(random);
+
+	$.get("/data", function(res, status) {
+		result = res;
+		console.log(result);
+
+		//data = result.data;
+		var margin = {top: 6, right: 0, bottom: 6, left: 40},
+		width = 960 - margin.right,
+		height = 120 - margin.top - margin.bottom;
+
+		var x = d3.scale.linear()
+		.domain(domain)
+		.range([0, width]);
+
+		var y = d3.scale.linear()
+		.domain([-20, 20])
+		.range([height, 0]);
+
+		var line = d3.svg.line()
+		//.interpolate(interpolation)
+		.x(function(d, i) { return x(i); })
+		.y(function(d, i) { return y(d); });
+
+			var svg = d3.select("body").append("p").append("svg")
+			.attr("width", width + margin.left + margin.right)
+			.attr("height", height + margin.top + margin.bottom)
+			.style("margin-left", -margin.left + "px")
+			.append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			svg.append("defs").append("clipPath")
+			.attr("id", "clip")
+			.append("rect")
+			.attr("width", width)
+			.attr("height", height);
+
+			svg.append("g")
+			.attr("class", "y axis")
+			.call(d3.svg.axis().scale(y).ticks(5).orient("left"));
+
+			var path = svg.append("g")
+			.attr("clip-path", "url(#clip)")
+			.append("path")
+			.datum(data)
+			.attr("class", "line")
+			.attr("d", line);
+
+				tick(path, line, data, x);
+	});
+};
+
+</script>
+
+</head><body><header>
+</header>
+
+
+<script>(function() {
+
+var transition = d3.select({}).transition()
+    .duration(duration_speed)
+    .ease("linear");
+
+chart([0, n - 1], "linear", function tick_x(path, line, data, x) {
+  transition = transition.each(function() {
+
+	  // push a new data point onto the back
+	data.push(result.data[pos_x].x);
+	pos_x++;
+	if(pos_x > 31)
+		pos_x = 0;
+
+    // redraw the line, and then slide it to the left
+    path
+        .attr("d", line)
+        .attr("transform", null)
+      .transition()
+        .attr("transform", "translate(" + x(-1) + ")");
+
+    // pop the old data point off the front
+    data.shift();
+
+  }).transition().each("start", function() { tick_x(path, line, data, x); });
+});
+
+})();</script>
+
+
+
+
+<script>(function() {
+
+var transition_y = d3.select({}).transition()
+    .duration(duration_speed)
+    .ease("linear");
+
+chart([0, n - 1], "linear", function tick_y(path, line, data, x) {
+try {
+  transition_y = transition_y.each(function() {
+
+	  // push a new data point onto the back
+	data.push(result.data[pos_y].y);
+	pos_y++;
+	if(pos_y > 31)
+		pos_y = 0;
+
+    // redraw the line, and then slide it to the left
+    path
+        .attr("d", line)
+        .attr("transform", null)
+      .transition()
+        .attr("transform", "translate(" + x(-1) + ")");
+
+    // pop the old data point off the front
+    data.shift();
+
+  }).transition().each("start", function() { tick_y(path, line, data, x); });
+}
+catch(err) {
+}
+});
+
+})();</script>
+
+
+
+<script>(function() {
+	getData();
+	var transition_z = d3.select({}).transition()
+	.duration(duration_speed)
+	.ease("linear");
+
+	chart([0, n - 1], "linear", function tick_z(path, line, data, x) {
+		transition_z = transition_z.each(function() {
+
+			// push a new data point onto the back
+			data.push(result.data[pos_z].z);
+			pos_z++;
+			if(pos_z > 31) {
+				pos_z = 0;
+			}
+
+			// redraw the line, and then slide it to the left
+			path
+			.attr("d", line)
+			.attr("transform", null)
+			.transition()
+			.attr("transform", "translate(" + x(-1) + ")");
+
+			// pop the old data point off the front
+			data.shift();
+
+		}).transition().each("start", function() { tick_z(path, line, data, x); });
+	});
+
+})();</script>
+</body>
+</html>
