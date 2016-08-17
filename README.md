@@ -54,13 +54,6 @@ http://github.com/abbasally5
 http://github.com/twb119
  <br/>
 
-**Jennifer Chance** <br/>
-http://github.com/jenchacne
- <br/>
-
-**Dan Greenfield** <br/>
- <br/>
-
 ## Contact
 
 Casen, Michael, Gunalan, and Abbas are part of Spark Lab (Security, Privasy, and Computer Architecture) at UT Austin and conduct research related to security and machine learning. For more information please contact the UT Austin Spark lab.
